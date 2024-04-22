@@ -9,11 +9,11 @@ public class UserModel {
     @Id
     private ObjectId id;
     private String username;
-    private RoomModel room;
+    private String roomCode;
 
-    public UserModel(String username, RoomModel room) {
+    public UserModel(String username, String roomCode) {
         this.username = username;
-        this.room = room;
+        this.roomCode = roomCode;
     }
 
     public void setUsername(String username) {
@@ -28,7 +28,7 @@ public class UserModel {
         return this.username;
     }
 
-    public RoomModel getRoom() {
-        return this.room;
+    public String getRoom() {
+        return this.roomCode;
     }
 }

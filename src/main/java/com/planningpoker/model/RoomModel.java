@@ -10,6 +10,7 @@ import java.util.List;
 public class RoomModel {
     @Id
     private ObjectId id;
+    private String roomCode;
     private List<UserModel> users;
 
     public RoomModel(List<UserModel> users) {
