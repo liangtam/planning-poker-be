@@ -21,8 +21,8 @@ public class UserController {
         return new ResponseEntity<Optional<UserModel>>(userService.findUserById(id), HttpStatus.OK);
     }
 
-//    @PostMapping()
-//    public ResponseEntity<UserModel> addUser() {
-//
-//    }
+    @PostMapping()
+    public ResponseEntity<UserModel> addUser(@RequestBody String username, @RequestBody String roomCode) {
+        return new ResponseEntity<UserModel>(userService.createUser(username, roomCode), HttpStatus.OK);
+    }
 }

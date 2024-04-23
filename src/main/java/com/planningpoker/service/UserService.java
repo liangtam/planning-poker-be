@@ -23,7 +23,7 @@ public class UserService {
     private MongoTemplate mongoTemplate;
 
 
-    // Optional in case we can't find the user and return null
+    // "Optional" is in case we can't find the user and return null
     public Optional<UserModel> findUserById(ObjectId id) {
         return userRepository.findById(id);
     }
@@ -36,5 +36,9 @@ public class UserService {
                 .apply(new Update().push("users").value(newUser))
                 .first();
         return newUser;
+    }
+
+    public void deleteUser(ObjectId id) {
+        userRepository.deleteById(id);
     }
 }
