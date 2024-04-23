@@ -1,7 +1,8 @@
 package com.planningpoker.controller;
 
 import com.planningpoker.model.UserModel;
-import com.planningpoker.service.UserService;
+import com.planningpoker.service.DTO.CreateUserBody;
+import com.planningpoker.service.UserServiceImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserModel>> getSingleUser(@PathVariable ObjectId id) {
@@ -22,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserModel> addUser(@RequestBody UserModel user) {
-        return new ResponseEntity<UserModel>(userService.createUser(user.getUsername(), user.getRoom()), HttpStatus.OK);
+    public ResponseEntity<UserModel> addUser(@RequestBody CreateUserBody user) {
+        return new ResponseEntity<UserModel>(userService.createUser(user.getUsername(), user.getRoomCode()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

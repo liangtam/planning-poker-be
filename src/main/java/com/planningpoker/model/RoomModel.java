@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection="rooms")
@@ -12,8 +13,11 @@ public class RoomModel {
     private ObjectId id;
     private String roomCode;
     private List<UserModel> users;
+    private List<IssueModel> issues;
 
-    public RoomModel(List<UserModel> users) {
+    public RoomModel(String roomCode, List<UserModel> users) {
+        this.roomCode = roomCode;
+        this.issues = new ArrayList<IssueModel>();
         this.users = users;
     }
 
@@ -25,4 +29,7 @@ public class RoomModel {
         return this.users;
     }
 
+    public List<IssueModel> getIssues() {
+        return this.issues;
+    }
 }

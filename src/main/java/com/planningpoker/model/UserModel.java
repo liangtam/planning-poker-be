@@ -1,5 +1,6 @@
 package com.planningpoker.model;
 
+import com.mongodb.lang.Nullable;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +11,8 @@ public class UserModel {
     private ObjectId id;
     private String username;
     private String roomCode;
+    @Nullable
+    private int currentVote;
 
     public UserModel(String username, String roomCode) {
         this.username = username;
@@ -28,7 +31,7 @@ public class UserModel {
         return this.username;
     }
 
-    public String getRoom() {
+    public String getRoomCode() {
         return this.roomCode;
     }
 }
