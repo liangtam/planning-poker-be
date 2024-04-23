@@ -22,7 +22,17 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserModel> addUser(@RequestBody String username, @RequestBody String roomCode) {
-        return new ResponseEntity<UserModel>(userService.createUser(username, roomCode), HttpStatus.OK);
+    public ResponseEntity<UserModel> addUser(@RequestBody UserModel user) {
+        return new ResponseEntity<UserModel>(userService.createUser(user.getUsername(), user.getRoom()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable ObjectId id) {
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }
