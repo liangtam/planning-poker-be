@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomService {
-    Optional<RoomModel> createRoom(String roomCode, List<UserModel> users);
+    RoomModel createRoom(String roomCode);
+
+    boolean doesRoomExist(String roomCode);
+
     boolean deleteRoom();
     Optional<RoomModel> addUser(UserModel user);
-    Optional<List<UserModel>> getUsers();
+    List<UserModel> getUsers(String roomCode);
     Optional<RoomModel> getRoomById();
     Optional<IssueModel> addIssue(IssueModel issue);
     Optional<List<IssueModel>> getIssues();

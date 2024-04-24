@@ -15,10 +15,10 @@ public class RoomModel {
     private List<UserModel> users;
     private List<IssueModel> issues;
 
-    public RoomModel(String roomCode, List<UserModel> users) {
+    public RoomModel(String roomCode) {
         this.roomCode = roomCode;
         this.issues = new ArrayList<IssueModel>();
-        this.users = users;
+        this.users = new ArrayList<UserModel>();
     }
 
     public void setUsers(List<UserModel> users) {
