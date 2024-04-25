@@ -1,5 +1,6 @@
 package com.planningpoker.service;
 
+import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
 import com.planningpoker.model.UserModel;
@@ -8,7 +9,6 @@ import com.planningpoker.service.interfaces.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,38 +44,44 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<UserModel> getUsers(String roomCode) {
+    public List<UserModel> getUsers(String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
             RoomModel foundRoom = room.get();
             return foundRoom.getUsers();
         } else {
-            return new ArrayList<>();
+            throw new NotFoundException("Room " + roomCode + " does not exist");
         }
     }
 
     @Override
-    public Optional<RoomModel> getRoomById() {
-        return Optional.empty();
+    public Optional<RoomModel> getRoomByCode(String roomCode) {
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
+            return Optional.of(foundRoom);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Optional<IssueModel> addIssue(IssueModel issue) {
-        return Optional.empty();
+    public IssueModel addIssue(IssueModel issue) {
+        return issue;
     }
 
     @Override
-    public Optional<List<IssueModel>> getIssues() {
-        return Optional.empty();
+    public List<IssueModel> getIssues() {
+        return null;
     }
 
     @Override
-    public Optional<List<UserModel>> updateUsers() {
-        return Optional.empty();
+    public List<UserModel> updateUsers() {
+        return null;
     }
 
     @Override
-    public Optional<List<IssueModel>> updateIssues() {
-        return Optional.empty();
+    public List<IssueModel> updateIssues() {
+        return null;
     }
 }

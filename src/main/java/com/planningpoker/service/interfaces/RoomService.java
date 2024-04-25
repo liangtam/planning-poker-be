@@ -14,10 +14,10 @@ public interface RoomService {
 
     boolean deleteRoom();
     Optional<RoomModel> addUser(UserModel user);
-    List<UserModel> getUsers(String roomCode);
-    Optional<RoomModel> getRoomById();
-    Optional<IssueModel> addIssue(IssueModel issue);
-    Optional<List<IssueModel>> getIssues();
-    Optional<List<UserModel>> updateUsers();
-    Optional<List<IssueModel>> updateIssues();
+    List<UserModel> getUsers(String roomCode) throws Exception;
+    Optional<RoomModel> getRoomByCode(String roomCode);
+    IssueModel addIssue(IssueModel issue);
+    List<IssueModel> getIssues();
+    List<UserModel> updateUsers();
+    List<IssueModel> updateIssues();
 }
