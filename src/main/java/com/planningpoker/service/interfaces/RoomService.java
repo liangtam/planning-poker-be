@@ -1,5 +1,6 @@
 package com.planningpoker.service.interfaces;
 
+import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
 import com.planningpoker.model.UserModel;
@@ -12,12 +13,12 @@ public interface RoomService {
 
     boolean doesRoomExist(String roomCode);
 
-    boolean deleteRoom();
+    void deleteRoom(String roomCode) throws NotFoundException;
     Optional<RoomModel> addUser(UserModel user);
     List<UserModel> getUsers(String roomCode) throws Exception;
     Optional<RoomModel> getRoomByCode(String roomCode);
-    IssueModel addIssue(IssueModel issue);
-    List<IssueModel> getIssues();
+    void addIssue(IssueModel issue, String roomCode) throws NotFoundException;
+    List<IssueModel> getIssues(String roomCode) throws NotFoundException;
     List<UserModel> updateUsers();
     List<IssueModel> updateIssues();
 }

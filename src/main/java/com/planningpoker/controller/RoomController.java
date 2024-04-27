@@ -18,7 +18,6 @@ public class RoomController {
 
     @PostMapping("/")
     public ResponseEntity<RoomModel> createRoom(@RequestBody String roomCode) {
-        System.out.println("HERERERERERERE");
         return new ResponseEntity<RoomModel>(roomService.createRoom(roomCode), HttpStatus.CREATED);
     }
 }
