@@ -18,5 +18,5 @@ public interface RoomService {
     Optional<RoomModel> getRoomByCode(String roomCode);
     void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException;
     List<IssueModel> getIssues(String roomCode) throws NotFoundException;
-    void addUserToRoom(String roomCode, UserModel user);
+    void addUserToRoom(String roomCode, UserModel user) throws NotFoundException;
 }

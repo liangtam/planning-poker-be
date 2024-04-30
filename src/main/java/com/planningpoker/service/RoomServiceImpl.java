@@ -36,11 +36,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public boolean doesRoomExist(String roomCode) {
-        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
-        if (room != null) {
-            return true;
-        }
-        return false;
+        return roomRepository.existsByRoomCode(roomCode);
     }
 
     @Override
@@ -65,13 +61,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Optional<RoomModel> getRoomByCode(String roomCode) {
-        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
-        if (room.isPresent()) {
-            RoomModel foundRoom = room.get();
-            return Optional.of(foundRoom);
-        } else {
-            return Optional.empty();
-        }
+        return roomRepository.findByRoomCode(roomCode);
     }
 
     @Override
@@ -99,11 +89,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void addUserToRoom(String roomCode, UserModel user) {
-        mongoTemplate.update(RoomModel.class)
-                .matching(Criteria.where("roomCode").is(roomCode))
-                .apply(new Update().push("users").value(user))
-                .first();
+    public void addUserToRoom(String roomCode, UserModel user) throws NotFoundException{
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            mongoTemplate.update(RoomModel.class)
+                    .matching(Criteria.where("roomCode").is(roomCode))
+                    .apply(new Update().push("users").value(user))
+                    .first();
+        } else {
+            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+        }
     }
-
 }
