@@ -14,11 +14,9 @@ public interface RoomService {
     boolean doesRoomExist(String roomCode);
 
     void deleteRoom(String roomCode) throws NotFoundException;
-    Optional<RoomModel> addUser(UserModel user);
-    List<UserModel> getUsers(String roomCode) throws Exception;
+    List<UserModel> getUsersFromRoom(String roomCode) throws Exception;
     Optional<RoomModel> getRoomByCode(String roomCode);
-    void addIssue(IssueModel issue, String roomCode) throws NotFoundException;
+    void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException;
     List<IssueModel> getIssues(String roomCode) throws NotFoundException;
-    List<UserModel> updateUsers();
-    List<IssueModel> updateIssues();
+    void addUserToRoom(String roomCode, UserModel user);
 }

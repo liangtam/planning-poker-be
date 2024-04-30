@@ -53,12 +53,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Optional<RoomModel> addUser(UserModel user) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<UserModel> getUsers(String roomCode) throws NotFoundException {
+    public List<UserModel> getUsersFromRoom(String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
             RoomModel foundRoom = room.get();
@@ -80,7 +75,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void addIssue(IssueModel issue, String roomCode) throws NotFoundException {
+    public void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
             mongoTemplate.update(RoomModel.class)
@@ -104,12 +99,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<UserModel> updateUsers() {
-        return null;
+    public void addUserToRoom(String roomCode, UserModel user) {
+        mongoTemplate.update(RoomModel.class)
+                .matching(Criteria.where("roomCode").is(roomCode))
+                .apply(new Update().push("users").value(user))
+                .first();
     }
 
-    @Override
-    public List<IssueModel> updateIssues() {
-        return null;
-    }
 }
