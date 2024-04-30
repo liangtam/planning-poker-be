@@ -31,13 +31,7 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
-    public boolean deleteUser(ObjectId id) {
-        if (userRepository.existsById(id)) {
+    public void deleteUser(ObjectId id) {
             userRepository.deleteById(id);
-            System.out.println("Deleted user " + id + "!");
-            return true;
-        } else {
-            return false;
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.planningpoker.service.DTO;
+package com.planningpoker.controller.DTO;
 
 import lombok.Data;
 

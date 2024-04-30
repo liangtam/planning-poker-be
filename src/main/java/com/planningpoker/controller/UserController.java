@@ -1,7 +1,7 @@
 package com.planningpoker.controller;
 
 import com.planningpoker.model.UserModel;
-import com.planningpoker.service.DTO.CreateUserBody;
+import com.planningpoker.controller.DTO.CreateUserBody;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.service.interfaces.UserService;
 import org.bson.types.ObjectId;
@@ -37,10 +37,10 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable ObjectId id) {
-        boolean deleted = userService.deleteUser(id);
-        if (deleted) {
+        try {
+            userService.deleteUser(id);
             return new ResponseEntity(HttpStatus.OK);
-        } else {
+        } catch (Exception error) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }

@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface UserService {
     Optional<UserModel> findUserById(ObjectId id);
     UserModel createUser(String username, String roomCode);
-    boolean deleteUser(ObjectId id);
+    void deleteUser(ObjectId id);
 }
