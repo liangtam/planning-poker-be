@@ -34,8 +34,8 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/{roomCode}")
-    public ResponseEntity<Optional<RoomModel>> getRoomByCode(@PathVariable String roomCode) {
+    @GetMapping()
+    public ResponseEntity<Optional<RoomModel>> getRoomByCode(@RequestParam String roomCode) {
         try {
             Optional<RoomModel> room = roomService.getRoomByCode(roomCode);
             return new ResponseEntity<>(room, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<RoomModel> createRoom(@RequestBody String roomCode) {
+    public ResponseEntity<RoomModel> createRoom(@RequestParam String roomCode) {
         try {
             RoomModel room = roomService.createRoom(roomCode);
             return new ResponseEntity<>(room, HttpStatus.CREATED);

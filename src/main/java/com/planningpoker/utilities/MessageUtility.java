@@ -1,7 +1,9 @@
 package com.planningpoker.utilities;
 
 import org.bson.types.ObjectId;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessageUtility {
     public String roomNotFoundMessage(String roomCode) {
         return "Room " + roomCode + " not found.";

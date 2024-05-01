@@ -7,9 +7,11 @@ import com.planningpoker.service.interfaces.IssueService;
 import com.planningpoker.utilities.MessageUtility;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class IssueServiceImpl implements IssueService {
     @Autowired
     private IssueRepository issueRepository;
