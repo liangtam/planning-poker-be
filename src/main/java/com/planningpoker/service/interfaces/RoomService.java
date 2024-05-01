@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomService {
-    RoomModel createRoom(String roomCode);
+    RoomModel createRoom(String roomCode) throws Exception;
     boolean doesRoomExist(String roomCode);
 
     void deleteRoom(String roomCode) throws NotFoundException;

@@ -43,7 +43,7 @@ public class IssueServiceImpl implements IssueService {
             issue.setPointEstimate(pointEstimate);
             return issueRepository.save(issue);
         } else {
-            throw new NotFoundException(messageUtility.issueNotFoundMessage(id));
+            throw new NotFoundException(messageUtility.createIssueNotFoundMessage(id));
         }
     }
 
@@ -55,7 +55,7 @@ public class IssueServiceImpl implements IssueService {
             issue.setPointEstimate(pointEstimate);
             return issueRepository.save(issue);
         } else {
-            throw new NotFoundException(messageUtility.issueNotFoundMessage(id));
+            throw new NotFoundException(messageUtility.createIssueNotFoundMessage(id));
         }
     }
 }

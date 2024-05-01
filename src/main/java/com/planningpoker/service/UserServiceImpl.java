@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(username);
             return userRepository.save(user);
         } else {
-            throw new NotFoundException(messageUtility.userNotFoundMessage(id));
+            throw new NotFoundException(messageUtility.createUserNotFoundMessage(id));
         }
     }
 }

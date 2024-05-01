@@ -30,7 +30,10 @@ public class RoomServiceImpl implements RoomService {
     private MessageUtility messageUtility;
 
     @Override
-    public RoomModel createRoom(String roomCode) {
+    public RoomModel createRoom(String roomCode) throws Exception {
+        if (roomRepository.existsByRoomCode(roomCode)) {
+            throw new Exception("Room already exists.");
+        }
         RoomModel room = roomRepository.insert(new RoomModel(roomCode));
         return room;
     }
@@ -45,7 +48,7 @@ public class RoomServiceImpl implements RoomService {
         if (roomRepository.existsByRoomCode(roomCode)) {
             roomRepository.deleteByRoomCode(roomCode);
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 
@@ -56,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
             RoomModel foundRoom = room.get();
             return foundRoom.getUsers();
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 
@@ -66,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
         if (room.isPresent()) {
             return room;
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 
@@ -84,7 +87,7 @@ public class RoomServiceImpl implements RoomService {
                     .apply(new Update().push("issues").value(issue))
                     .first();
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 
@@ -95,7 +98,7 @@ public class RoomServiceImpl implements RoomService {
             RoomModel foundRoom = room.get();
             return foundRoom.getIssues();
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 
@@ -108,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
                     .apply(new Update().push("users").value(user))
                     .first();
         } else {
-            throw new NotFoundException(messageUtility.roomNotFoundMessage(roomCode));
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 }
