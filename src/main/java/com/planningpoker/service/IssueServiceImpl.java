@@ -17,6 +17,10 @@ public class IssueServiceImpl implements IssueService {
     @Autowired
     private MessageUtility messageUtility;
 
+    public Optional<IssueModel> getIssueById(ObjectId id) {
+        return issueRepository.findById(id);
+    }
+
     @Override
     public IssueModel createIssue(String title, String description) {
         return issueRepository.insert(new IssueModel(title, description));

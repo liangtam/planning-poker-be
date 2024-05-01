@@ -7,6 +7,7 @@ import com.planningpoker.model.UserModel;
 import com.planningpoker.repository.RoomRepository;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.utilities.MessageUtility;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -65,6 +66,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Optional<RoomModel> getRoomById(ObjectId id) {
+        return roomRepository.findById(id);
+    }
+
+    @Override
     public void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
@@ -78,7 +84,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<IssueModel> getIssues(String roomCode) throws NotFoundException {
+    public List<IssueModel> getIssuesFromRoom(String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
             RoomModel foundRoom = room.get();

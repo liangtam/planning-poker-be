@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<UserModel> findUserById(ObjectId id);
+    Optional<UserModel> getUserById(ObjectId id);
     UserModel createUser(String username, String roomCode);
     void deleteUser(ObjectId id);
     UserModel updateUsername(String username, ObjectId id) throws NotFoundException;

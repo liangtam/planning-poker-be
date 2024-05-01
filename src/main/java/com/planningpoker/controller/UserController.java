@@ -1,5 +1,6 @@
 package com.planningpoker.controller;
 
+import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.UserModel;
 import com.planningpoker.controller.DTO.CreateUserBody;
 import com.planningpoker.service.interfaces.RoomService;
@@ -23,14 +24,16 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserModel>> getSingleUser(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<UserModel>>(userService.findUserById(id), HttpStatus.OK);
+        return new ResponseEntity<Optional<UserModel>>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<UserModel> addUser(@RequestBody CreateUserBody user) {
-        if (roomService.doesRoomExist(user.getRoomCode())) {
-            return new ResponseEntity<UserModel>(userService.createUser(user.getUsername(), user.getRoomCode()), HttpStatus.CREATED);
-        } else {
+        try {
+            UserModel newUser = userService.createUser(user.getUsername(), user.getRoomCode());
+            roomService.addUserToRoom(user.getRoomCode(), newUser);
+            return new ResponseEntity<UserModel>(newUser, HttpStatus.CREATED);
+        } catch (NotFoundException error) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -41,6 +44,16 @@ public class UserController {
             userService.deleteUser(id);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception error) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity updateUser(@PathVariable ObjectId id, @RequestParam String username) {
+        try {
+            userService.updateUsername(username, id);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (NotFoundException error) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
