@@ -15,7 +15,7 @@ public interface RoomService {
 
     void deleteRoom(String roomCode) throws NotFoundException;
     List<UserModel> getUsersFromRoom(String roomCode) throws Exception;
-    Optional<RoomModel> getRoomByCode(String roomCode);
+    Optional<RoomModel> getRoomByCode(String roomCode) throws NotFoundException;
     Optional<RoomModel> getRoomById(ObjectId id);
     void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException;
     List<IssueModel> getIssuesFromRoom(String roomCode) throws NotFoundException;
