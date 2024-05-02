@@ -41,11 +41,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean doesRoomExist(String roomCode) {
-        return roomRepository.existsByRoomCode(roomCode);
-    }
-
-    @Override
     public void deleteRoom(String roomCode) throws NotFoundException {
         if (roomRepository.existsByRoomCode(roomCode)) {
             roomRepository.deleteByRoomCode(roomCode);

@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface RoomService {
     RoomModel createRoom(String roomCode) throws Exception;
-    boolean doesRoomExist(String roomCode);
 
     void deleteRoom(String roomCode) throws NotFoundException;
     List<UserModel> getUsersFromRoom(String roomCode) throws Exception;
