@@ -29,7 +29,7 @@ public class UserController {
         try {
             return new ResponseEntity<Optional<UserModel>>(userService.getUserById(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,9 +39,9 @@ public class UserController {
             List<UserModel> users = roomService.getUsersFromRoom(roomCode);
             return new ResponseEntity(users, HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,9 +52,9 @@ public class UserController {
             roomService.addUserToRoom(user.getRoomCode(), newUser);
             return new ResponseEntity<UserModel>(newUser, HttpStatus.CREATED);
         } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,9 +65,9 @@ public class UserController {
             roomService.deleteUserFromRoom(roomCode, userId);
             return new ResponseEntity(HttpStatus.OK);
         }  catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -76,8 +76,10 @@ public class UserController {
         try {
             userService.updateUsername(username, id);
             return new ResponseEntity(HttpStatus.OK);
-        } catch (NotFoundException error) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

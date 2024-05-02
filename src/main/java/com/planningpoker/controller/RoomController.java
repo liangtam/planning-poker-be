@@ -29,10 +29,10 @@ public class RoomController {
         try {
             List<IssueModel> issues = roomService.getIssuesFromRoom(roomCode);
             return new ResponseEntity<>(issues, HttpStatus.OK);
-        } catch (NotFoundException error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -41,10 +41,10 @@ public class RoomController {
         try {
             List<UserModel> users = roomService.getUsersFromRoom(roomCode);
             return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (NotFoundException error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,10 +53,10 @@ public class RoomController {
         try {
             Optional<RoomModel> room = roomService.getRoomByCode(roomCode);
             return new ResponseEntity<>(room, HttpStatus.OK);
-        } catch (NotFoundException error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,8 +65,8 @@ public class RoomController {
         try {
             RoomModel room = roomService.createRoom(roomCode);
             return new ResponseEntity<>(room, HttpStatus.CREATED);
-        } catch (Exception error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,10 +75,10 @@ public class RoomController {
         try {
             roomService.deleteRoom(roomCode);
             return new ResponseEntity(HttpStatus.OK);
-        } catch (NotFoundException error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
-        } catch (Exception error) {
-            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NotFoundException e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

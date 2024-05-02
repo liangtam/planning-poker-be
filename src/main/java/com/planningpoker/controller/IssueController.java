@@ -29,9 +29,9 @@ public class IssueController {
             List<IssueModel> issues = roomService.getIssuesFromRoom(roomCode);
             return new ResponseEntity(issues, HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -42,9 +42,9 @@ public class IssueController {
             roomService.deleteIssueFromRoom(issueId, roomCode);
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -56,9 +56,9 @@ public class IssueController {
             return new ResponseEntity(createdIssue, HttpStatus.CREATED);
 
         } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -69,7 +69,7 @@ public class IssueController {
             return new ResponseEntity(updatedIssue, HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
