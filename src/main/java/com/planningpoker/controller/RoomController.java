@@ -3,6 +3,7 @@ package com.planningpoker.controller;
 import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
+import com.planningpoker.model.UserModel;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.utilities.ErrorObject;
 import com.planningpoker.utilities.MessageUtility;
@@ -28,6 +29,18 @@ public class RoomController {
         try {
             List<IssueModel> issues = roomService.getIssuesFromRoom(roomCode);
             return new ResponseEntity<>(issues, HttpStatus.OK);
+        } catch (NotFoundException error) {
+            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception error) {
+            return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity getUsersFromRoom(@RequestParam String roomCode) {
+        try {
+            List<UserModel> users = roomService.getUsersFromRoom(roomCode);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (NotFoundException error) {
             return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.NOT_FOUND);
         } catch (Exception error) {
