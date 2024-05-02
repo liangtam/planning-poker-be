@@ -81,4 +81,5 @@ public class RoomController {
             return new ResponseEntity<>(new ErrorObject(error.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

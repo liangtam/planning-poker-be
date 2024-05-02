@@ -34,13 +34,19 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public IssueModel updateIssue(ObjectId id, String title, String description, int pointEstimate) throws NotFoundException{
+    public IssueModel updateIssue(ObjectId id, String title, String description, Integer pointEstimate) throws NotFoundException{
         Optional<IssueModel> foundIssue = issueRepository.findById(id);
         if (foundIssue.isPresent()) {
             IssueModel issue = foundIssue.get();
-            issue.setTitle(title);
-            issue.setDescription(description);
-            issue.setPointEstimate(pointEstimate);
+            if (title != null) {
+                issue.setTitle(title);
+            }
+            if (description != null) {
+                issue.setDescription(description);
+            }
+            if (pointEstimate != null) {
+                issue.setPointEstimate(pointEstimate);
+            }
             return issueRepository.save(issue);
         } else {
             throw new NotFoundException(messageUtility.createIssueNotFoundMessage(id));

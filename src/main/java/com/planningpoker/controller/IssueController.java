@@ -1,5 +1,6 @@
 package com.planningpoker.controller;
 
+import com.planningpoker.controller.DTO.IssueBody;
 import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.service.interfaces.IssueService;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/issues/")
@@ -30,15 +30,16 @@ public class IssueController {
             return new ResponseEntity(issues, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteIssue(@PathVariable ObjectId id) {
+    @DeleteMapping
+    public ResponseEntity deleteIssue(@RequestParam ObjectId issueId, @RequestParam String roomCode) {
         try {
-            Optional<IssueModel> issue = issueService.getIssueById(id);
-            issueService.deleteIssue(id);
-            roomService.deleteIssueFromRoom(id, issue.get().getRoomCode());
+            issueService.deleteIssue(issueId);
+            roomService.deleteIssueFromRoom(issueId, roomCode);
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
@@ -48,7 +49,7 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity postIssue(@RequestBody CreateIssueBody issue, @RequestParam String roomCode) {
+    public ResponseEntity postIssue(@RequestBody IssueBody issue, @RequestParam String roomCode) {
         try {
             IssueModel createdIssue = issueService.createIssue(issue.getTitle(), issue.getDescription(), issue.getRoomCode());
             roomService.addIssueToRoom(createdIssue, roomCode);
@@ -56,6 +57,17 @@ public class IssueController {
 
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity updateIssue(@PathVariable ObjectId id, @RequestBody IssueBody newIssueDetails) {
+        try {
+            IssueModel updatedIssue = issueService.updateIssue(id, newIssueDetails.getTitle(), newIssueDetails.getDescription(), newIssueDetails.getPointEstimate());
+            return new ResponseEntity(updatedIssue, HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity(new ErrorObject(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }

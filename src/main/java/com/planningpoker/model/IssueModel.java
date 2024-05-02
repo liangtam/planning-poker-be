@@ -13,7 +13,7 @@ public class IssueModel {
     @Nullable
     private String description;
     @Nullable
-    private int pointEstimate;
+    private Integer pointEstimate;
     private String roomCode;
 
     public IssueModel(String title, String description, String roomCode) {

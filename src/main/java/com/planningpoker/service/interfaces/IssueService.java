@@ -10,6 +10,6 @@ public interface IssueService {
     Optional<IssueModel> getIssueById(ObjectId id);
     IssueModel createIssue(String title, String description, String roomCode);
     void deleteIssue(ObjectId id);
-    IssueModel updateIssue(ObjectId id, String title, String description, int pointEstimate) throws NotFoundException;
+    IssueModel updateIssue(ObjectId id, String title, String description, Integer pointEstimate) throws NotFoundException;
     IssueModel updateIssuePoints(ObjectId id, int pointEstimate) throws NotFoundException;
 }
