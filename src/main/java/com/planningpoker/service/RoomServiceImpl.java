@@ -113,13 +113,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void addUserToRoom(String roomCode, UserModel user) throws NotFoundException {
-        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
-        if (room.isPresent()) {
-            mongoTemplate.update(RoomModel.class)
-                    .matching(Criteria.where("roomCode").is(roomCode))
-                    .apply(new Update().push("users").value(user))
-                    .first();
-        } else {
+        UpdateResult result = mongoTemplate.update(RoomModel.class)
+                .matching(Criteria.where("roomCode").is(roomCode))
+                .apply(new Update().push("users").value(user))
+                .first();
+        if (result.getModifiedCount() == 0) {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
