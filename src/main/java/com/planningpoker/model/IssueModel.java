@@ -14,9 +14,11 @@ public class IssueModel {
     private String description;
     @Nullable
     private int pointEstimate;
+    private String roomCode;
 
-    public IssueModel(String title, String description) {
+    public IssueModel(String title, String description, String roomCode) {
         this.title = title;
         this.description = description;
+        this.roomCode = roomCode;
     }
 }

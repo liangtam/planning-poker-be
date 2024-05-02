@@ -24,8 +24,8 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public IssueModel createIssue(String title, String description) {
-        return issueRepository.insert(new IssueModel(title, description));
+    public IssueModel createIssue(String title, String description, String roomCode) {
+        return issueRepository.insert(new IssueModel(title, description, roomCode));
     }
 
     @Override

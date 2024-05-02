@@ -1,5 +1,6 @@
 package com.planningpoker.service;
 
+import com.mongodb.client.result.UpdateResult;
 import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
@@ -11,6 +12,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
@@ -80,16 +82,28 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void addIssueToRoom(IssueModel issue, String roomCode) throws NotFoundException {
-        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
-        if (room.isPresent()) {
-            mongoTemplate.update(RoomModel.class)
-                    .matching(Criteria.where("roomCode").is(roomCode))
-                    .apply(new Update().push("issues").value(issue))
-                    .first();
-        } else {
+        Query query = new Query(Criteria.where("roomCode").is(roomCode));
+        Update update = new Update().push("issues").value(issue);
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, RoomModel.class);
+
+        if (result.getModifiedCount() == 0) {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
+
+    @Override
+    public void deleteIssueFromRoom(ObjectId issueId, String roomCode) throws NotFoundException {
+        Query query = new Query(Criteria.where("roomCode").is(roomCode));
+        Update update = new Update().pull("issues", Query.query(Criteria.where("_id").is(issueId)));
+
+        UpdateResult result = mongoTemplate.updateFirst(query, update, RoomModel.class);
+
+        if (result.getModifiedCount() == 0) {
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
+        }
+    }
+
 
     @Override
     public List<IssueModel> getIssuesFromRoom(String roomCode) throws NotFoundException {
@@ -111,6 +125,18 @@ public class RoomServiceImpl implements RoomService {
                     .apply(new Update().push("users").value(user))
                     .first();
         } else {
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
+        }
+    }
+
+    @Override
+    public void deleteUserFromRoom(String roomCode, ObjectId userId) throws NotFoundException {
+        Query query = new Query(Criteria.where("roomCode").is(roomCode));
+        Update update = new Update().pull("users", Criteria.where("_id").is(userId));
+
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, RoomModel.class);
+
+        if (updateResult.getModifiedCount() == 0) {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
