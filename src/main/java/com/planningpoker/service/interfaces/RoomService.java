@@ -13,6 +13,7 @@ public interface RoomService {
     RoomModel createRoom(String roomCode) throws Exception;
 
     void deleteRoom(String roomCode) throws NotFoundException;
+    boolean isUserInRoom(String username, String roomCode);
     List<UserModel> getUsersFromRoom(String roomCode) throws NotFoundException;
     Optional<RoomModel> getRoomByCode(String roomCode) throws NotFoundException;
     Optional<RoomModel> getRoomById(ObjectId id);

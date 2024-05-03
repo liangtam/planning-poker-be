@@ -50,6 +50,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public boolean isUserInRoom(String username, String roomCode) {
+        Query query = new Query(Criteria.where("roomCode").is(roomCode).and("users").elemMatch(Criteria.where("username").is(username)));
+        return mongoTemplate.exists(query, RoomModel.class);
+    }
+
+    @Override
     public List<UserModel> getUsersFromRoom(String roomCode) throws NotFoundException {
         Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
         if (room.isPresent()) {
