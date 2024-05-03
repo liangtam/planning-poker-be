@@ -33,9 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel createUser(String username, String roomCode) {
-        UserModel newUser = new UserModel(username, roomCode);
-        userRepository.insert(newUser);
-        return newUser;
+        return userRepository.insert(new UserModel(username, roomCode));
     }
 
     @Override

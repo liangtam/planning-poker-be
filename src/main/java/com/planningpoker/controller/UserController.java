@@ -25,9 +25,9 @@ public class UserController {
     private RoomService roomService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserModel>> getUserById(@PathVariable ObjectId id) {
+    public ResponseEntity<Optional<UserModel>> getUserById(@PathVariable String id) {
         try {
-            return new ResponseEntity<Optional<UserModel>>(userService.getUserById(id), HttpStatus.OK);
+            return new ResponseEntity<Optional<UserModel>>(userService.getUserById(new ObjectId(id)), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -45,11 +45,16 @@ public class UserController {
         }
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UserModel> postUser(@RequestBody CreateUserBody user) {
         try {
-            UserModel newUser = userService.createUser(user.getUsername(), user.getRoomCode());
-            roomService.addUserToRoom(user.getRoomCode(), newUser);
+            String username = user.getUsername();
+            String roomCode = user.getRoomCode();
+            if (roomService.isUserInRoom(username, roomCode)) {
+                throw new Exception("User with username " + username + " is already in the room " + roomCode + ".");
+            }
+            UserModel newUser = userService.createUser(username, roomCode);
+            roomService.addUserToRoom(roomCode, newUser);
             return new ResponseEntity<UserModel>(newUser, HttpStatus.CREATED);
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
