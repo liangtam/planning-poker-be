@@ -64,13 +64,12 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteUser(@RequestParam ObjectId userId, @RequestParam String roomCode) {
+    public ResponseEntity deleteUser(@RequestParam String userId, @RequestParam String roomCode) {
         try {
-            userService.deleteUser(userId);
-            roomService.deleteUserFromRoom(roomCode, userId);
+            ObjectId id = new ObjectId(userId);
+            userService.deleteUser(id);
+            roomService.deleteUserFromRoom(roomCode, id);
             return new ResponseEntity(HttpStatus.OK);
-        }  catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
