@@ -1,5 +1,7 @@
 package com.planningpoker.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="users")
 public class UserModel {
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
     private String username;
     private String roomCode;

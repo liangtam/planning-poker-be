@@ -136,7 +136,7 @@ public class RoomServiceImpl implements RoomService {
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, RoomModel.class);
 
         if (updateResult.getModifiedCount() == 0) {
-            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
+            throw new NotFoundException("User or room is not found.");
         }
     }
 }

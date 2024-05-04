@@ -1,5 +1,8 @@
 package com.planningpoker.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,9 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection="rooms")
+@Data
+@Document(collection = "rooms")
 public class RoomModel {
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
     private String roomCode;
     private List<UserModel> users;
@@ -19,17 +24,5 @@ public class RoomModel {
         this.roomCode = roomCode;
         this.issues = new ArrayList<IssueModel>();
         this.users = new ArrayList<UserModel>();
-    }
-
-    public void setUsers(List<UserModel> users) {
-        this.users = users;
-    }
-
-    public List<UserModel> getUsers() {
-        return this.users;
-    }
-
-    public List<IssueModel> getIssues() {
-        return this.issues;
     }
 }
