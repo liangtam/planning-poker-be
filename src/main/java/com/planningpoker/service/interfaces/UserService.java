@@ -10,5 +10,5 @@ public interface UserService {
     Optional<UserModel> getUserById(ObjectId id);
     UserModel createUser(String username, String roomCode);
     void deleteUser(ObjectId id);
-    UserModel updateUsername(String username, ObjectId id) throws NotFoundException;
+    UserModel updateUser(ObjectId id, String username, Integer currVotes) throws NotFoundException;
 }

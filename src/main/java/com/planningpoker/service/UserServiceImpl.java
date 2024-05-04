@@ -42,11 +42,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel updateUsername(String username, ObjectId id) throws NotFoundException {
+    public UserModel updateUser(ObjectId id, String username, Integer currVotes) throws NotFoundException {
         Optional<UserModel> foundUser = userRepository.findById(id);
         if (foundUser.isPresent()) {
             UserModel user = foundUser.get();
-            user.setUsername(username);
+            if (username != null) {
+                user.setUsername(username);
+            }
+            if (currVotes != null) {
+                user.setCurrentVote(currVotes);
+            }
             return userRepository.save(user);
         } else {
             throw new NotFoundException(messageUtility.createUserNotFoundMessage(id));
