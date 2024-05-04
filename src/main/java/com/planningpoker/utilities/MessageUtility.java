@@ -10,10 +10,10 @@ public class MessageUtility {
     }
 
     public String createUserNotFoundMessage(ObjectId id) {
-        return "User " + id + "not found.";
+        return "User " + id + " not found.";
     }
 
     public String createIssueNotFoundMessage(ObjectId id) {
-        return "Issue " + id + "not found.";
+        return "Issue " + id + " not found.";
     }
 }

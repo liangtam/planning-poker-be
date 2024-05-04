@@ -130,13 +130,19 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteUserFromRoom(String roomCode, ObjectId userId) throws NotFoundException {
-        Query query = new Query(Criteria.where("roomCode").is(roomCode));
-        Update update = new Update().pull("users", new Query(Criteria.where("_id").is(userId)));
-
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, RoomModel.class);
-
-        if (updateResult.getModifiedCount() == 0) {
-            throw new NotFoundException("User or room is not found.");
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
+            List<UserModel> users = foundRoom.getUsers();
+            int originalNumOfUsers = users.size();
+            users.removeIf(user -> user.getId().equals(userId));
+            if (users.size() == originalNumOfUsers) {
+                throw new NotFoundException(messageUtility.createUserNotFoundMessage(userId));
+            }
+            foundRoom.setUsers(users);
+            roomRepository.save(foundRoom);
+        } else {
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
 }
