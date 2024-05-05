@@ -23,6 +23,14 @@ public class IssueController {
     @Autowired
     private RoomService roomService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity getIssueById(@PathVariable String id) {
+        try {
+            return new ResponseEntity(issueService.getIssueById(new ObjectId(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping
     public ResponseEntity getIssuesFromRoom(@RequestParam String roomCode) {
         try {
@@ -49,10 +57,10 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity postIssue(@RequestBody IssueBody issue, @RequestParam String roomCode) {
+    public ResponseEntity postIssue(@RequestBody IssueBody issue) {
         try {
             IssueModel createdIssue = issueService.createIssue(issue.getTitle(), issue.getDescription(), issue.getRoomCode());
-            roomService.addIssueToRoom(createdIssue, roomCode);
+            roomService.addIssueToRoom(createdIssue, issue.getRoomCode());
             return new ResponseEntity(createdIssue, HttpStatus.CREATED);
 
         } catch (NotFoundException e) {
