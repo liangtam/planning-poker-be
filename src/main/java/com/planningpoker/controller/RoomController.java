@@ -2,7 +2,9 @@ package com.planningpoker.controller;
 
 import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.RoomModel;
+import com.planningpoker.service.interfaces.IssueService;
 import com.planningpoker.service.interfaces.RoomService;
+import com.planningpoker.service.interfaces.UserService;
 import com.planningpoker.utilities.ErrorObject;
 import com.planningpoker.utilities.MessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ import java.util.Optional;
 public class RoomController {
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private IssueService issueService;
 
     @Autowired
     private MessageUtility messageUtility;
@@ -71,6 +77,8 @@ public class RoomController {
     public ResponseEntity deleteRoom(@PathVariable String roomCode) {
         try {
             roomService.deleteRoom(roomCode);
+            issueService.deleteAllIssuesInRoom(roomCode);
+            userService.deleteAllUsersInRoom(roomCode);
             return new ResponseEntity(HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);

@@ -5,9 +5,7 @@ import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
 import com.planningpoker.model.UserModel;
-import com.planningpoker.repository.IssueRepository;
 import com.planningpoker.repository.RoomRepository;
-import com.planningpoker.repository.UserRepository;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.utilities.MessageUtility;
 import org.bson.types.ObjectId;
@@ -28,12 +26,6 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private IssueRepository issueRepository;
-
-    @Autowired
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -50,10 +42,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(String roomCode) throws NotFoundException {
-        if (roomRepository.existsByRoomCode(roomCode)) {
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
             roomRepository.deleteByRoomCode(roomCode);
-            userRepository.deleteAllByRoomCode(roomCode);
-            issueRepository.deleteAllByRoomCode(roomCode);
         } else {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
