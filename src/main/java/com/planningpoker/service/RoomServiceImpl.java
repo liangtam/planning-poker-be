@@ -5,7 +5,9 @@ import com.planningpoker.exceptions.NotFoundException;
 import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
 import com.planningpoker.model.UserModel;
+import com.planningpoker.repository.IssueRepository;
 import com.planningpoker.repository.RoomRepository;
+import com.planningpoker.repository.UserRepository;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.utilities.MessageUtility;
 import org.bson.types.ObjectId;
@@ -26,6 +28,12 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private IssueRepository issueRepository;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -44,6 +52,8 @@ public class RoomServiceImpl implements RoomService {
     public void deleteRoom(String roomCode) throws NotFoundException {
         if (roomRepository.existsByRoomCode(roomCode)) {
             roomRepository.deleteByRoomCode(roomCode);
+            userRepository.deleteAllByRoomCode(roomCode);
+            issueRepository.deleteAllByRoomCode(roomCode);
         } else {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
@@ -95,12 +105,18 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteIssueFromRoom(ObjectId issueId, String roomCode) throws NotFoundException {
-        Query query = new Query(Criteria.where("roomCode").is(roomCode));
-        Update update = new Update().pull("issues", Query.query(Criteria.where("_id").is(issueId)));
-
-        UpdateResult result = mongoTemplate.updateFirst(query, update, RoomModel.class);
-
-        if (result.getModifiedCount() == 0) {
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
+            List<IssueModel> issues = foundRoom.getIssues();
+            int originalNumOfUsers = issues.size();
+            issues.removeIf(user -> user.getId().equals(issueId));
+            if (issues.size() == originalNumOfUsers) {
+                throw new NotFoundException(messageUtility.createIssueNotFoundMessage(issueId));
+            }
+            foundRoom.setIssues(issues);
+            roomRepository.save(foundRoom);
+        } else {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
@@ -145,4 +161,5 @@ public class RoomServiceImpl implements RoomService {
             throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
         }
     }
+
 }

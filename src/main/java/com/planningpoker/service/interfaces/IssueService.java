@@ -12,4 +12,6 @@ public interface IssueService {
     void deleteIssue(ObjectId id);
     IssueModel updateIssue(ObjectId id, String title, String description, Integer pointEstimate) throws NotFoundException;
     IssueModel updateIssuePoints(ObjectId id, int pointEstimate) throws NotFoundException;
+    void deleteAllIssuesInRoom(String roomCode);
+
 }

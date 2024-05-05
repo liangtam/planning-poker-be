@@ -57,4 +57,9 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException(messageUtility.createUserNotFoundMessage(id));
         }
     }
+
+    @Override
+    public void deleteAllUsersInRoom(String roomCode) {
+        userRepository.deleteAllByRoomCode(roomCode);
+    }
 }

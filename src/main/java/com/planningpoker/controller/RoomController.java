@@ -1,9 +1,7 @@
 package com.planningpoker.controller;
 
 import com.planningpoker.exceptions.NotFoundException;
-import com.planningpoker.model.IssueModel;
 import com.planningpoker.model.RoomModel;
-import com.planningpoker.model.UserModel;
 import com.planningpoker.service.interfaces.RoomService;
 import com.planningpoker.utilities.ErrorObject;
 import com.planningpoker.utilities.MessageUtility;
@@ -12,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,29 +21,29 @@ public class RoomController {
     @Autowired
     private MessageUtility messageUtility;
 
-    @GetMapping("/issues")
-    public ResponseEntity getIssuesFromRoom(@RequestParam String roomCode) {
-        try {
-            List<IssueModel> issues = roomService.getIssuesFromRoom(roomCode);
-            return new ResponseEntity<>(issues, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/issues")
+//    public ResponseEntity getIssuesFromRoom(@RequestParam String roomCode) {
+//        try {
+//            List<IssueModel> issues = roomService.getIssuesFromRoom(roomCode);
+//            return new ResponseEntity<>(issues, HttpStatus.OK);
+//        } catch (NotFoundException e) {
+//            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-    @GetMapping("/users")
-    public ResponseEntity getUsersFromRoom(@RequestParam String roomCode) {
-        try {
-            List<UserModel> users = roomService.getUsersFromRoom(roomCode);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/users")
+//    public ResponseEntity getUsersFromRoom(@RequestParam String roomCode) {
+//        try {
+//            List<UserModel> users = roomService.getUsersFromRoom(roomCode);
+//            return new ResponseEntity<>(users, HttpStatus.OK);
+//        } catch (NotFoundException e) {
+//            return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @GetMapping
     public ResponseEntity getRoomByCode(@RequestParam String roomCode) {

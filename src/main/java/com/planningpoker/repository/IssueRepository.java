@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IssueRepository extends MongoRepository<IssueModel, ObjectId> {
+    void deleteAllByRoomCode(String roomCode);
 }

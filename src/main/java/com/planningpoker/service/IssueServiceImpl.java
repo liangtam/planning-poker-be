@@ -64,4 +64,9 @@ public class IssueServiceImpl implements IssueService {
             throw new NotFoundException(messageUtility.createIssueNotFoundMessage(id));
         }
     }
+
+    @Override
+    public void deleteAllIssuesInRoom(String roomCode) {
+        issueRepository.deleteAllByRoomCode(roomCode);
+    }
 }
