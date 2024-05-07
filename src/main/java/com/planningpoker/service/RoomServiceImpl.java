@@ -154,4 +154,44 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
+    @Override
+    public void updateIssueInRoom(String roomCode, IssueModel updatedIssue) throws NotFoundException {
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
+            ObjectId issueId = updatedIssue.getId();
+            List<IssueModel> issues = foundRoom.getIssues();
+            int originalNumOfUsers = issues.size();
+            issues.removeIf(user -> user.getId().equals(issueId));
+            if (issues.size() == originalNumOfUsers) {
+                throw new NotFoundException(messageUtility.createIssueNotFoundMessage(issueId));
+            }
+            issues.add(updatedIssue);
+            foundRoom.setIssues(issues);
+            roomRepository.save(foundRoom);
+        } else {
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
+        }
+    }
+
+    @Override
+    public void updateUserInRoom(String roomCode, UserModel updatedUser) throws NotFoundException {
+        Optional<RoomModel> room = roomRepository.findByRoomCode(roomCode);
+        if (room.isPresent()) {
+            RoomModel foundRoom = room.get();
+            ObjectId userId = updatedUser.getId();
+            List<UserModel> users = foundRoom.getUsers();
+            int originalNumOfUsers = users.size();
+            users.removeIf(user -> user.getId().equals(userId));
+            if (users.size() == originalNumOfUsers) {
+                throw new NotFoundException(messageUtility.createUserNotFoundMessage(userId));
+            }
+            users.add(updatedUser);
+            foundRoom.setUsers(users);
+            roomRepository.save(foundRoom);
+        } else {
+            throw new NotFoundException(messageUtility.createRoomNotFoundMessage(roomCode));
+        }
+    }
+
 }

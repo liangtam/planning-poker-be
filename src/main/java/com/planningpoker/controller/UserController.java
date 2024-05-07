@@ -77,8 +77,11 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity updateUser(@PathVariable ObjectId id, @RequestParam(required = false) String username, @RequestParam(required = false) Integer currentVote) {
+
         try {
-            return new ResponseEntity(userService.updateUser(id, username, currentVote), HttpStatus.OK);
+            UserModel updatedUser = userService.updateUser(id, username, currentVote);
+            roomService.updateUserInRoom(updatedUser.getRoomCode(), updatedUser);
+            return new ResponseEntity(updatedUser, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e) {

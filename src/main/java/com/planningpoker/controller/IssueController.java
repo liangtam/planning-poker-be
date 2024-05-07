@@ -74,8 +74,8 @@ public class IssueController {
     public ResponseEntity updateIssue(@PathVariable ObjectId id, @RequestBody IssueBody newIssueDetails) {
         try {
             IssueModel updatedIssue = issueService.updateIssue(id, newIssueDetails.getTitle(), newIssueDetails.getDescription(), newIssueDetails.getPointEstimate());
+            roomService.updateIssueInRoom(updatedIssue.getRoomCode(), updatedIssue);
             return new ResponseEntity(updatedIssue, HttpStatus.OK);
-
         } catch (Exception e) {
             return new ResponseEntity(new ErrorObject(e.getMessage(), "Unknown"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
