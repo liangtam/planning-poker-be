@@ -1,4 +1,4 @@
-package com.planningpoker.utilities;
+package com.planningpoker.utility;
 
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;

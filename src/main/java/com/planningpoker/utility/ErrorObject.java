@@ -1,4 +1,4 @@
-package com.planningpoker.utilities;
+package com.planningpoker.utility;
 
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
